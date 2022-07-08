@@ -5,84 +5,128 @@ using System.Text.RegularExpressions;
 using Xunit;
 
 
-Console.WriteLine("Recipe Ingredients Scaler Program\n");
-
 int userChoices = 0;
 
+Console.WriteLine(" Recipe Ingredients Scaler Program\n");
+
+bool users;
+string answer, recipe;
+int originalServing, newServing;
+double scaleFactor;
+int ingredientNumber;
+string ingredientName, ingredientString, ingredientUnit, newAmount;
+double ingredientAmount;
 
 Dictionary<string, string> oldIngredient = new Dictionary<string, string>();
 Dictionary<string, string> newIngredient = new Dictionary<string, string>();
 
+
+
 users = true;
-do
+
+while(user)
 {
-    Console.Write("1) Enter a recipe name: \n2) Display your favorite recipe servings: \n0) Exit \n");
-    try
+    answer = "";
+    recipe = "";
+    originalServing = 0;
+    newServing = 0;
+    scaleFactor = 1.0;
+    ingredientNumber = 0;
+    ingredientName = "";
+    ingredientString = "";
+    ingredientAmount = 0.0;
+    ingredientUnit = "";
+    newAmount = "";
+
+    oldIngredients.Clear();
+    newIngredients.Clear();
+
+    Console.WriteLine();
+    while (answer != "Y" && answer != "N")
     {
-        userChoices = int.Parse(Console.ReadLine().Trim());
+        Console.Write(" Do you wish to enter a new recipe? (Y/N): ");
+        try
+        {
+            answer = (Console.ReadLine() ?? "").Trim().Substring(0, 1).ToUpper();
+        }
+        catch
+        {
+            continue;
+        }
     }
-    catch
+    if (answer == "N")
     {
-        userChoices = -1;
+        users = false;
+        continue;
     }
-    Console.Clear();
 
-    switch (userChoices)
+    Console.WriteLine();
+    while (recipe == "")
     {
-        case 1:
-            Console.Write("Enter recipe name: ");// Name your favorite recipe
-            users.Add(Console.ReadLine().Trim());
+        Console.Write(" Enter the name of your recipe: ");
+        recipe = (Console.ReadLine() ?? "").Trim();
+    }
 
-            Console.Write("Original recipe serving size: "); // user input 1.5 will prompt error: do up functions
-            double max = 10;
-            users.Add(Console.ReadLine().Trim());
-
-            //Error prompt = Please enter a whole and positive number!
-
-            Console.Write("Desired serving size scaling: ");// Correct number in whole not decimals
-            users.Add(Console.ReadLine().Trim());
-            // if
-            Console.Write("Ingredient name (enter DONE when ingredients list complete,ie:beef broth, chicken broth, pho broth etc: "); // Name of broth
-            users.Add(Console.ReadLine().Trim());
-
-            Console.Write("Ingredient amount (please enter the amount followed by a space, and then the units:"); // Which unit the user input mL, grams, lbs
-            users.Add(Console.ReadLine().Trim());
-
-
-            // If no for scaling should terminate and go back to main menu
-            Console.Write("Would you like to enter another recipe for scaling (Yes/No)?:");//No
-            users.Add(Console.ReadLine().Trim());
-            break;
-
-
-        case 2:
-            foreach (string user in users) Console.WriteLine(user);
-            break;
-
-        case 0:
-            break;
-        default:
-            // Display an error if the menu choice is invalid.
-            Console.WriteLine("Please enter a valid input.");
-            break;
+    Console.WriteLine();
+    while (originalServing <= 0) 
+    {
+        Console.Write(" How many servings does the original recipe makes? ");
+        try
+        {
+            originalServing = int.Parse((Console.ReadLine() ?? "").Trim());
+            if(originalServing <= 0)
+            {
+                Console.WriteLine(" Error, Please enter a positive whole number. ");
+            }
+        }
+        catch
+        {
+            Console.WriteLine("Error, You need to enter a whole number of serving. Please try again! ");
+        }
 
     }
 
     Console.WriteLine();
+    while(newServing <= 0)
+    {
+        Console.Write(" HOw many serving do you want to be adjusted? ");
+        try
+        {
+            newServing = int.Parse((Console.ReadLine() ?? "").Trim());
+        }
+    }
+    catch
+    {
+        Console.WriteLine(" Error, You need to enter a whole number of serving, Please try again! ");
+    }
+
+    scaleFactor = Convert.ToDouble(newServing) / Convert.ToDouble(originalServing);
+    Console.WriteLine(" You want to scale a recipe for " + originalServing +
+        " serving of " + recipe + " to feed " + newServing +
+        "instead.");
+
+    Console.WriteLine(" Enter the original recipe ingredients and quantities bew. " + "Type DONE if you are done. \n");
+
+    while (ingredientName.ToUpper != "DONE")
+    {
+        ingredientNumber = ingredientNumber + 1;
+        ingredientName = "";
+        ingredientString = "";
+        ingredientAmount = 0.0;
+        ingredientUnit = "";
+        while (ingredientName == "")
+        {
+
+        }
+    }
 
 
-} while (userChoices != 0);
 
-// functions
-void RecipeIngredient(ref string toDisplay)
-{
+
+
+
+
+
 
 }
-
-/*
- double Scale(int value, int min, int max, int minScale, int maxScale)
-{
-    double scaled = minScale + (double)(value - min) / (max - min) * (maxScale - minScale);
-    return scaled;
-} */
 
