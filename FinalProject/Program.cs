@@ -87,17 +87,22 @@ while(user)
     }
 
     Console.WriteLine();
-    while(newServing <= 0)
+    while (newServing <= 0)
     {
         Console.Write(" HOw many serving do you want to be adjusted? ");
         try
         {
             newServing = int.Parse((Console.ReadLine() ?? "").Trim());
+            if (newServing <= 0)
+            {
+                Console.WriteLine(" Error, You need to positive whole numbers.");
+            }
         }
-    }
-    catch
-    {
-        Console.WriteLine(" Error, You need to enter a whole number of serving, Please try again! ");
+
+        catch
+        {
+            Console.WriteLine(" Error, You need to enter a whole number of serving, Please try again! ");
+        }
     }
 
     scaleFactor = Convert.ToDouble(newServing) / Convert.ToDouble(originalServing);
@@ -107,17 +112,48 @@ while(user)
 
     Console.WriteLine(" Enter the original recipe ingredients and quantities bew. " + "Type DONE if you are done. \n");
 
-    while (ingredientName.ToUpper != "DONE")
+    while (ingredientName.ToUpper() != "DONE")
     {
         ingredientNumber = ingredientNumber + 1;
         ingredientName = "";
         ingredientString = "";
         ingredientAmount = 0.0;
         ingredientUnit = "";
+        
         while (ingredientName == "")
         {
-
+            Console.Write(" Name of ingredient # " + ingredientNumber + " : ");
+            ingredientName = (Console.ReadLine() ?? "").Trim();
         }
+        if (ingredientName.ToUpper() == "DONE")
+        {
+            Console.WriteLine(" End Of Ingredient for" + recipe + "");
+            continue;
+        }
+        while(ingredientString == "" || ingredientAmount <= 0.0 || ingredientUnit == "")
+        {
+            Console.Write(" Amount of ingredient " + ingredientNumber + " , followed by units: ");
+            if(ingredientString == "")
+            {
+                continue;
+            }
+            try
+            {
+                string numbersValidation = "0.123456789";
+                string digits = new String(ingredientString.Where(c => numbersValidation.Contains(c)).ToArray());
+                int i = digits.Count();
+
+                ingredientAmount = Convert.ToDouble(ingredientString.Substring(0, i));
+                ingredientUnit = ingredientString.Substring(i).Trim();
+            }
+            if (ingredientAmount <= 0.0 || ingredientUnit == "")
+            {
+                Console.WriteLine(" Error, You need a Positive amount and a unit for the ingredient. ");
+                continue;
+            }
+        }
+        ingredientString = String.Format("", ingredientAmount) + " " + ingredientUnit;
+        newAmount = String.Format("", scaleFactor, )
     }
 
 
