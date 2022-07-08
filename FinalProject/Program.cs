@@ -10,9 +10,10 @@ Console.WriteLine("Recipe Ingredients Scaler Program\n");
 int userChoices = 0;
 
 
-List<string> users = new List<string>();
+Dictionary<string, string> oldIngredient = new Dictionary<string, string>();
+Dictionary<string, string> newIngredient = new Dictionary<string, string>();
 
-
+users = true;
 do
 {
     Console.Write("1) Enter a recipe name: \n2) Display your favorite recipe servings: \n0) Exit \n");
