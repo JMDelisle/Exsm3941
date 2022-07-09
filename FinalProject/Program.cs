@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
-using System.Text.RegularExpressions;
-using Xunit;
-
-
-int userChoices = 0;
-
-Console.WriteLine(" Recipe Ingredients Scaler Program\n");
+using System.Linq;
 
 bool users;
 string answer, recipe;
@@ -16,13 +9,13 @@ double scaleFactor;
 int ingredientNumber;
 string ingredientName, ingredientString, ingredientUnit, newAmount;
 double ingredientAmount;
-
-Dictionary<string, string> oldIngredient = new Dictionary<string, string>();
-Dictionary<string, string> newIngredient = new Dictionary<string, string>();
+Dictionary<string, string> oldIngredient = new();
+Dictionary<string, string> newIngredient = new();
 
 
 
 users = true;
+Console.WriteLine(" Recipe Ingredients Scaler Program\n");
 
 while (users)
 {
@@ -47,7 +40,7 @@ while (users)
         Console.Write(" Do you wish to enter a new recipe? (Y/N): ");
         try
         {
-            answer = (Console.ReadLine() ?? "").Trim().Substring(0, 1).ToUpper();
+            answer = (Console.ReadLine() ?? "").Trim()[..1].ToUpper();
         }
         catch
         {
@@ -113,7 +106,7 @@ while (users)
 
     while (ingredientName.ToUpper() != "DONE")
     {
-        ingredientNumber = ingredientNumber + 1;
+        ingredientNumber++;
         ingredientName = "";
         ingredientString = "";
         ingredientAmount = 0.0;
@@ -139,11 +132,11 @@ while (users)
             try
             {
                 string numbersValidation = "0.123456789";
-                string digits = new String(ingredientString.Where(c => numbersValidation.Contains(c)).ToArray());
-                int i = digits.Count();
+                string digits = new(ingredientString.Where(c => numbersValidation.Contains(c)).ToArray());
+                int i = digits.Length;
 
-                ingredientAmount = Convert.ToDouble(ingredientString.Substring(0, i));
-                ingredientUnit = ingredientString.Substring(i).Trim();
+                ingredientAmount = Convert.ToDouble(ingredientString[..i]);
+                ingredientUnit = ingredientString[i..].Trim();
             }
             catch
             {
@@ -158,30 +151,32 @@ while (users)
                 Console.WriteLine(" Error, You need a Positive amount and a unit for the ingredient. ");
                 continue;
             }
-
-
-            Console.WriteLine();
-            Console.WriteLine("THe original recipe for " + recipe + " (serves " + originalServing + " ) ");
-            foreach (KeyValuePair<string, string> thing in oldIngredient)
-            {
-                Console.WriteLine(" " + thing.Key + ": " + thing.Value);
-            }
-            Console.WriteLine("The new scaled recipe (serves " + newServing + "), printed to file" + recipe + ".txt");
-            foreach (KeyValuePair<string, string> thing in newIngredient)
-            {
-                Console.WriteLine("" + thing.Key + ": " + thing.Value);
-            }
-
-            using (StreamWriter writer = File.CreateText(recipe + ".txt"))
-            {
-                writer.WriteLine("Recipe: " + recipe + "\n");
-                writer.WriteLine("Original number of servings: " + originalServing);
-                writer.WriteLine("Scaled number of servings: " + newServing + "\n");
-                writer.WriteLine("Scaled ingredients and amounts =");
-
-                foreach (KeyValuePair<string, string> thing in newIngredient) ;
-            }
+            ingredientString = String.Format("{0:F2}", ingredientAmount) + " " + ingredientUnit;
+            newAmount = String.Format("{0:F2}", scaleFactor * ingredientAmount) + " " + ingredientUnit;
+            oldIngredient.Add(ingredientName, ingredientString);
+            newIngredient.Add(ingredientName, newAmount);
         }
+
+        Console.WriteLine();
+        Console.WriteLine("THe original recipe for " + recipe + " (serves " + originalServing + " ) ");
+        foreach (KeyValuePair<string, string> thing in oldIngredient)
+        {
+            Console.WriteLine(" " + thing.Key + ": " + thing.Value);
+        }
+        Console.WriteLine("The new scaled recipe (serves " + newServing + "), printed to file" + recipe + ".txt");
+        foreach (KeyValuePair<string, string> thing in newIngredient)
+        {
+            Console.WriteLine("" + thing.Key + ": " + thing.Value);
+        }
+
+        using StreamWriter writer = File.CreateText(recipe + ".txt");
+        writer.WriteLine("Recipe: " + recipe + "\n");
+        writer.WriteLine("Original number of servings: " + originalServing);
+        writer.WriteLine("Scaled number of servings: " + newServing + "\n");
+        writer.WriteLine("Scaled ingredients and amounts =");
+
+        foreach (KeyValuePair<string, string> thing in newIngredient) ;
     }
 }
-    Console.WriteLine("\n Thank you for using this program");
+
+Console.WriteLine("\n Thank you for using this program");
