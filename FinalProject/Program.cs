@@ -38,8 +38,8 @@ while(users)
     ingredientUnit = "";
     newAmount = "";
 
-    //oldIngredients.Clear();
-    //newIngredients.Clear();
+    oldIngredients.Clear();
+    newIngredients.Clear();
 
     Console.WriteLine();
     while (answer != "Y" && answer != "N")
