@@ -1,0 +1,6 @@
+Recipe: beef ribs
+
+Original number of servings: 100
+Scaled number of servings: 15
+
+Scaled ingredients and amounts =

@@ -107,6 +107,7 @@ while (users)
     while (ingredientName.ToUpper() != "DONE")
     {
         ingredientNumber++;
+
         ingredientName = "";
         ingredientString = "";
         ingredientAmount = 0.0;
@@ -124,15 +125,16 @@ while (users)
         }
         while (ingredientString == "" || ingredientAmount <= 0.0 || ingredientUnit == "")
         {
-            Console.Write(" Amount of ingredient " + ingredientNumber + " , followed by units: ");
+            Console.Write("Amount of ingredient #" + ingredientNumber + ", followed by units:ie cups, mL, grams,or lbs: ");
+            ingredientString = (Console.ReadLine() ?? "").Trim();
             if (ingredientString == "")
             {
                 continue;
             }
             try
             {
-                string numbersValidation = "0.123456789";
-                string digits = new(ingredientString.Where(c => numbersValidation.Contains(c)).ToArray());
+                string validDigits = "0.123456789";
+                string digits = new(ingredientString.Where(c => validDigits.Contains(c)).ToArray());
                 int i = digits.Length;
 
                 ingredientAmount = Convert.ToDouble(ingredientString[..i]);
@@ -140,43 +142,42 @@ while (users)
             }
             catch
             {
-                Console.WriteLine(" Error, Enter a positive number followed by Characters representing a unit! ");
+                Console.WriteLine("*** Enter a POSITIVE NUMBER followed by CHARACTERS representing a unit.");
                 ingredientAmount = 0.0;
                 continue;
             }
-
             if (ingredientAmount <= 0.0 || ingredientUnit == "")
-
             {
-                Console.WriteLine(" Error, You need a Positive amount and a unit for the ingredient. ");
+                Console.WriteLine("*** You need a POSITIVE AMOUNT AND A UNIT for the ingredient.");
                 continue;
             }
-            ingredientString = String.Format("{0:F2}", ingredientAmount) + " " + ingredientUnit;
-            newAmount = String.Format("{0:F2}", scaleFactor * ingredientAmount) + " " + ingredientUnit;
-            oldIngredient.Add(ingredientName, ingredientString);
-            newIngredient.Add(ingredientName, newAmount);
         }
-
-        Console.WriteLine();
-        Console.WriteLine("THe original recipe for " + recipe + " (serves " + originalServing + " ) ");
-        foreach (KeyValuePair<string, string> thing in oldIngredient)
-        {
-            Console.WriteLine(" " + thing.Key + ": " + thing.Value);
-        }
-        Console.WriteLine("The new scaled recipe (serves " + newServing + "), printed to file" + recipe + ".txt");
-        foreach (KeyValuePair<string, string> thing in newIngredient)
-        {
-            Console.WriteLine("" + thing.Key + ": " + thing.Value);
-        }
-
-        using StreamWriter writer = File.CreateText(recipe + ".txt");
-        writer.WriteLine("Recipe: " + recipe + "\n");
-        writer.WriteLine("Original number of servings: " + originalServing);
-        writer.WriteLine("Scaled number of servings: " + newServing + "\n");
-        writer.WriteLine("Scaled ingredients and amounts =");
-
-        foreach (KeyValuePair<string, string> thing in newIngredient) ;
+        ingredientString = String.Format("{0:F2}", ingredientAmount) + " " + ingredientUnit;
+        newAmount = String.Format("{0:F2}", scaleFactor * ingredientAmount) + " " + ingredientUnit;
+        oldIngredient.Add(ingredientName, ingredientString);
+        newIngredient.Add(ingredientName, newAmount);
     }
+
+    Console.WriteLine();
+    Console.WriteLine("THe original recipe for " + recipe + " (serves " + originalServing + " ) ");
+    foreach (KeyValuePair<string, string> thing in oldIngredient)
+    {
+        Console.WriteLine(" " + thing.Key + ": " + thing.Value);
+    }
+    Console.WriteLine("The new scaled recipe (serves " + newServing + "), printed to file" + recipe + ".txt");
+    foreach (KeyValuePair<string, string> thing in newIngredient)
+    {
+        Console.WriteLine("" + thing.Key + ": " + thing.Value);
+    }
+
+    using StreamWriter writer = File.CreateText(recipe + ".txt");
+    writer.WriteLine("Recipe: " + recipe + "\n");
+    writer.WriteLine("Original number of servings: " + originalServing);
+    writer.WriteLine("Scaled number of servings: " + newServing + "\n");
+    writer.WriteLine("Scaled ingredients and amounts =");
+
+    foreach (KeyValuePair<string, string> thing in newIngredient) ;
 }
 
-Console.WriteLine("\n Thank you for using this program");
+
+Console.WriteLine("\n Thank you for using this program ");

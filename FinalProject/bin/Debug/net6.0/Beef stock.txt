@@ -1,0 +1,6 @@
+Recipe: Beef stock
+
+Original number of servings: 5
+Scaled number of servings: 5
+
+Scaled ingredients and amounts =
