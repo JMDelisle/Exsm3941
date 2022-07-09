@@ -24,7 +24,7 @@ Dictionary<string, string> newIngredient = new Dictionary<string, string>();
 
 users = true;
 
-while(users)
+while (users)
 {
     answer = "";
     recipe = "";
@@ -38,8 +38,8 @@ while(users)
     ingredientUnit = "";
     newAmount = "";
 
-    oldIngredients.Clear();
-    newIngredients.Clear();
+    oldIngredient.Clear();
+    newIngredient.Clear();
 
     Console.WriteLine();
     while (answer != "Y" && answer != "N")
@@ -68,13 +68,13 @@ while(users)
     }
 
     Console.WriteLine();
-    while (originalServing <= 0) 
+    while (originalServing <= 0)
     {
         Console.Write(" How many servings does the original recipe makes? ");
         try
         {
             originalServing = int.Parse((Console.ReadLine() ?? "").Trim());
-            if(originalServing <= 0)
+            if (originalServing <= 0)
             {
                 Console.WriteLine(" Error, Please enter a positive whole number. ");
             }
@@ -118,7 +118,7 @@ while(users)
         ingredientString = "";
         ingredientAmount = 0.0;
         ingredientUnit = "";
-        
+
         while (ingredientName == "")
         {
             Console.Write(" Name of ingredient # " + ingredientNumber + " : ");
@@ -129,10 +129,10 @@ while(users)
             Console.WriteLine(" End Of Ingredient for" + recipe + "");
             continue;
         }
-        while(ingredientString == "" || ingredientAmount <= 0.0 || ingredientUnit == "")
+        while (ingredientString == "" || ingredientAmount <= 0.0 || ingredientUnit == "")
         {
             Console.Write(" Amount of ingredient " + ingredientNumber + " , followed by units: ");
-            if(ingredientString == "")
+            if (ingredientString == "")
             {
                 continue;
             }
@@ -158,16 +158,30 @@ while(users)
                 Console.WriteLine(" Error, You need a Positive amount and a unit for the ingredient. ");
                 continue;
             }
+
+
+            Console.WriteLine();
+            Console.WriteLine("THe original recipe for " + recipe + " (serves " + originalServing + " ) ");
+            foreach (KeyValuePair<string, string> thing in oldIngredient)
+            {
+                Console.WriteLine(" " + thing.Key + ": " + thing.Value);
+            }
+            Console.WriteLine("The new scaled recipe (serves " + newServing + "), printed to file" + recipe + ".txt");
+            foreach (KeyValuePair<string, string> thing in newIngredient)
+            {
+                Console.WriteLine("" + thing.Key + ": " + thing.Value);
+            }
+
+            using (StreamWriter writer = File.CreateText(recipe + ".txt"))
+            {
+                writer.WriteLine("Recipe: " + recipe + "\n");
+                writer.WriteLine("Original number of servings: " + originalServing);
+                writer.WriteLine("Scaled number of servings: " + newServing + "\n");
+                writer.WriteLine("Scaled ingredients and amounts =");
+
+                foreach (KeyValuePair<string, string> thing in newIngredient) ;
+            }
         }
     }
-
-
-
-
-
-
-
-
-
 }
-
+    Console.WriteLine("\n Thank you for using this program");
