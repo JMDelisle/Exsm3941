@@ -24,7 +24,7 @@ Dictionary<string, string> newIngredient = new Dictionary<string, string>();
 
 users = true;
 
-while(user)
+while(users)
 {
     answer = "";
     recipe = "";
@@ -38,8 +38,8 @@ while(user)
     ingredientUnit = "";
     newAmount = "";
 
-    oldIngredients.Clear();
-    newIngredients.Clear();
+    //oldIngredients.Clear();
+    //newIngredients.Clear();
 
     Console.WriteLine();
     while (answer != "Y" && answer != "N")
@@ -107,10 +107,9 @@ while(user)
 
     scaleFactor = Convert.ToDouble(newServing) / Convert.ToDouble(originalServing);
     Console.WriteLine(" You want to scale a recipe for " + originalServing +
-        " serving of " + recipe + " to feed " + newServing +
-        "instead.");
+        " serving of " + recipe + " to feed " + newServing + " instead. ");
 
-    Console.WriteLine(" Enter the original recipe ingredients and quantities bew. " + "Type DONE if you are done. \n");
+    Console.WriteLine(" Enter the original recipe ingredients and quantities below. " + "Type DONE if you are done. \n");
 
     while (ingredientName.ToUpper() != "DONE")
     {
@@ -146,14 +145,20 @@ while(user)
                 ingredientAmount = Convert.ToDouble(ingredientString.Substring(0, i));
                 ingredientUnit = ingredientString.Substring(i).Trim();
             }
+            catch
+            {
+                Console.WriteLine(" Error, Enter a positive number followed by Characters representing a unit! ");
+                ingredientAmount = 0.0;
+                continue;
+            }
+
             if (ingredientAmount <= 0.0 || ingredientUnit == "")
+
             {
                 Console.WriteLine(" Error, You need a Positive amount and a unit for the ingredient. ");
                 continue;
             }
         }
-        ingredientString = String.Format("", ingredientAmount) + " " + ingredientUnit;
-        newAmount = String.Format("", scaleFactor, )
     }
 
 
